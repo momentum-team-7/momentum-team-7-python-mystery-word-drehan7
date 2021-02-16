@@ -13,22 +13,21 @@ def print_word_freq(file):
         file_words_list = f.read().split()
 
     lowercase_wordlist = []
-    for word in file_words_list:
-        lowercase_wordlist.append(regex.sub('', word).lower())
 
-    for word in lowercase_wordlist:
-        for stopword in STOP_WORDS:
-            if word == stopword:
-                lowercase_wordlist.remove(word)
+    for word in file_words_list:
+        lowercase_wordlist.append(regex.sub('', word.lower()))
+        if word in STOP_WORDS:
+            lowercase_wordlist.pop(lowercase_wordlist.index(word))
+    print(lowercase_wordlist)
 
     frequency_dict = {}
-    for word in lowercase_wordlist:
-        if word in frequency_dict:
-            frequency_dict[word] += 1
+    for result in lowercase_wordlist:
+        if result in frequency_dict:
+            frequency_dict[result] += 1
         else:
-            frequency_dict[word] = 1
+            frequency_dict[result] = 1
 
-    for k, v in frequency_dict.items():
+    for k, v in sorted(frequency_dict.items(), key=lambda x: x[1], reverse=True):
         print("{:>16} | {:<3} {:<5}".format(k, v, ('*'*v)))
 
 
